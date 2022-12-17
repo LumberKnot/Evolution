@@ -1,10 +1,11 @@
 package creature
 
-import controler.Position
+import controler.{Clockable, Position,tickHandler}
 
-case class Plant(position: Position, reproductionTime : Int, reproductionRange : Double):
+case class Plant(position: Position, reproductionTime : Int, reproductionRange : Double, clock : tickHandler) extends Clockable:
 
-  private var time : Double = 0
+  private var time: Int = 0
+  clock.addClockable(this)
 
   def tick() : Unit =
     time += 1
