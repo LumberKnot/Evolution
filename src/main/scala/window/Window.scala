@@ -1,0 +1,5 @@
+package window
+
+class Window {
+
+}
