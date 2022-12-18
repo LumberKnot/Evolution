@@ -41,9 +41,9 @@ case class Window(val title: String, val width: Int, val height: Int):
 
     val g2d = bs.getDrawGraphics().asInstanceOf[Graphics2D]
     val (x: Int, y: Int) = camera.position.getTuple
+    g2d.clearRect(0, 0, width, height)
     g2d.translate(x, y)
     //g2d.rotate(camera.rotation, width/2, height/2)
-    g2d.clearRect(-camera.position.x, -camera.position.y, width -camera.position.x, height - camera.position.y)
 
 
     draw(g2d) //RITAR ALLT

@@ -4,8 +4,6 @@ import scala.annotation.targetName
 
 case class Position(x : Int, y : Int):
   def getTuple: (Int, Int) = (x, y)
-
-  def moved(dPosition: Position): Position = this + dPosition
   def magnitude(): Double = math.sqrt(x*x + y*y)
   @targetName("plus")
   infix def +(other: Position): Position = Position(other.x + x, other.y + y)
