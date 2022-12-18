@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent
 import java.awt.event.MouseListener
 import java.awt.event.MouseMotionListener
 import java.awt.Graphics2D
+import java.awt.Color
 case class Window(val title: String, val width: Int, val height: Int):
   val keyManager = new KeyManager()
   private val mouseManager = new MouseManager()
@@ -21,10 +22,10 @@ case class Window(val title: String, val width: Int, val height: Int):
   display.canvas.addMouseMotionListener(mouseManager)
 
   def setOrigin(position: Position): Unit =
-    camera = camera.moveTo(position)
+  camera = camera.moveTo(position)
 
   def setRotation(rotation: Radians): Unit =
-    camera = camera.rotateTo(rotation)
+  camera = camera.rotateTo(rotation)
 
   def leftPressed: Boolean = mouseManager.leftPressed
   def rightPressed: Boolean = mouseManager.rightPressed
@@ -32,10 +33,9 @@ case class Window(val title: String, val width: Int, val height: Int):
   def mousePos: Position = camera.position - Position.fromIntTuple(mouseManager.pos)
 
 
-  def render(draw: (Graphics2D) => Unit): Unit =
-    import java.awt.Color
+  def render(draw: Graphics2D => Unit): Unit =
     var bs = display.canvas.getBufferStrategy
-    if (bs == null) then
+    if bs == null then
       display.canvas.createBufferStrategy(3)
       bs = display.canvas.getBufferStrategy
 

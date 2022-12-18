@@ -1,4 +1,4 @@
-package controler
+package controller
 
 case class tickHandler(timePerTick : Int = 16):
 

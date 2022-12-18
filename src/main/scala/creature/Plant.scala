@@ -1,6 +1,7 @@
 package creature
 
-import controler.{Clockable, Position,tickHandler}
+import controller.{Clockable, Position}
+import controller.tickHandler
 
 case class Plant(position: Position, reproductionTime : Int, reproductionRange : Double, clock : tickHandler) extends Clockable:
 
