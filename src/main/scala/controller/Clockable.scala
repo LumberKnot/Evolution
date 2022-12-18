@@ -1,4 +1,4 @@
 package controller
 
-trait Clockable : 
-  def tick() : Unit
+trait Clockable:
+  def tick(deltaTime : Int) : Unit = ???
