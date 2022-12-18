@@ -1,6 +1,6 @@
 package creature
 
-private case class CreatureAttributes(
+case class CreatureAttributes(
                              //General
                               startEnergy : Double,
                               reproduceEnergy : Double,

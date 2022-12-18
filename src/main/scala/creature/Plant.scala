@@ -1,12 +1,15 @@
 package creature
 
-import controller.{Clockable, Position, TickHandler}
+import controller.{Clockable, Drawable, GameObject, Position, Transform}
+import simulation.Simulation
 
-case class Plant(position: Position, reproductionTime : Int, reproductionRange : Double) extends Clockable:
+import java.awt.Graphics2D
+
+case class Plant(var transform: Transform, reproductionTime : Int, reproductionRange : Double) extends GameObject:
 
   private var time: Int = 0
 
-  override def tick(deltaTime : Int) : Unit =
+  override def tick(deltaTime : Int, simulation: Simulation) : Unit =
     time += 1
 
     if time >= reproductionTime then
@@ -15,6 +18,12 @@ case class Plant(position: Position, reproductionTime : Int, reproductionRange :
 
 
   private def reproduce() : Unit =
-    copy(position = position.randomWithin(reproductionRange))
+    copy(transform = transform.moveTo(transform.position.randomWithin(reproductionRange)))
+
+  override def draw(g2d: Graphics2D): Unit =
+    val (x, y) = transform.position.getTuple
+    val radius = 10
+    g2d.setColor(java.awt.Color.GREEN)
+    g2d.fillOval(x - radius/2, y - radius/2, radius, radius)
 
 
