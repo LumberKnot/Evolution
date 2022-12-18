@@ -5,9 +5,8 @@ import controller.{Clockable, Position, TickHandler}
 case class Plant(position: Position, reproductionTime : Int, reproductionRange : Double, clock : TickHandler) extends Clockable:
 
   private var time: Int = 0
-  clock.addClockable(this)
 
-  def tick() : Unit =
+  override def tick(deltaTime : Int) : Unit =
     time += 1
 
     if time >= reproductionTime then
