@@ -1,6 +1,6 @@
 package window
 
-import controller.{Position, Transform}
+import controller.{Position, Radians, Transform}
 
 import java.awt.event.KeyListener
 import java.awt.event.KeyListener
@@ -11,8 +11,8 @@ import java.awt.event.MouseMotionListener
 import java.awt.Graphics2D
 case class Window(val title: String, val width: Int, val height: Int):
   val keyManager = new KeyManager()
-  val mouseManager = new MouseManager()
-  val display: Display = new Display(title, width, height)
+  private val mouseManager = new MouseManager()
+  private val display: Display = new Display(title, width, height)
   private var camera = Transform(0, 0, 0)
   display.frame.addKeyListener(keyManager)
   display.frame.addMouseListener(mouseManager)
@@ -20,8 +20,17 @@ case class Window(val title: String, val width: Int, val height: Int):
   display.canvas.addMouseListener(mouseManager)
   display.canvas.addMouseMotionListener(mouseManager)
 
-  def setOrigin(position: Position): Unit = 
-    
+  def setOrigin(position: Position): Unit =
+    camera = camera.moveTo(position)
+
+  def setRotation(rotation: Radians): Unit =
+    camera = camera.rotateTo(rotation)
+
+  def leftPressed: Boolean = mouseManager.leftPressed
+  def rightPressed: Boolean = mouseManager.rightPressed
+
+  def mousePos: Position = camera.position - Position.fromIntTuple(mouseManager.pos)
+
 
   def render(draw: (Graphics2D) => Unit): Unit =
     import java.awt.Color
@@ -31,7 +40,12 @@ case class Window(val title: String, val width: Int, val height: Int):
       bs = display.canvas.getBufferStrategy
 
     val g2d = bs.getDrawGraphics().asInstanceOf[Graphics2D]
-    g2d.clearRect(0, 0, width, height)
+    val (x: Int, y: Int) = camera.position.getTuple
+    g2d.translate(x, y)
+    //g2d.rotate(camera.rotation, width/2, height/2)
+    g2d.clearRect(-camera.position.x, -camera.position.y, width -camera.position.x, height - camera.position.y)
+
+
     draw(g2d) //RITAR ALLT
     bs.show()
     g2d.dispose()
@@ -40,7 +54,7 @@ case class Window(val title: String, val width: Int, val height: Int):
 
 
 class KeyManager() extends KeyListener:
-  var keys: Array[Boolean] = new Array(526)
+  private val keys: Array[Boolean] = new Array(526)
 
   override def keyPressed(e: KeyEvent): Unit =
     keys(e.getKeyCode) = true
