@@ -1,6 +1,6 @@
 package controller
 
-case class tickHandler(timePerTick : Int = 16):
+case class TickHandler(timePerTick : Int = 16):
 
   private var objects : Vector[Clockable] = Vector()
 
