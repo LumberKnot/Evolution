@@ -1,6 +1,6 @@
 package controller
 
-case class tickHandler(timePerTick : Int = 16):
+case class TickHandler(timePerTick : Int = 16):
 
   private var objects : Vector[Clockable] = Vector()
 
@@ -8,5 +8,5 @@ case class tickHandler(timePerTick : Int = 16):
     objects = objects :+ clockable
 
 
-  def sendTick() : Unit =
-    objects.foreach(_.tick())
+  def sendTick(deltaTime : Int) : Unit =
+    objects.foreach(_.tick(deltaTime))
