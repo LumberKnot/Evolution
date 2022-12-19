@@ -13,11 +13,11 @@ case class Position(x : Int, y : Int):
   @targetName("minus")
   infix def -(other: Position): Position = Position(other.x - x, other.y - y)
 
-  lazy val random : Random = Random()
+  private lazy val random : Random = Random()
   def randomWithin(range : Double) : Position =
     val angle = random.nextDouble() * 2 * Math.PI
     val r = random.nextDouble() * range
-    fromPolar(r,angle)
+    this + fromPolar(r,angle)
 
 
 object Position:
