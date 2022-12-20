@@ -6,11 +6,27 @@ import simulation.Simulation
 import java.awt.Graphics2D
 
 case class Herbivore(var transform: Transform, attributes: CreatureAttributes) extends GameObject:
-  override def tick(deltaTime: Int, simulation: Simulation): Unit =
-    move(deltaTime)
 
-  private def move(deltaTime: Int): Unit =
-    transform = transform.moved(Position.fromPolar(deltaTime * attributes.speed, transform.rotation))
+  var energy = attributes.startEnergy
+  override def tick(deltaTime: Int, simulation: Simulation): Unit =
+    val target = seek(simulation)
+    lookAt(target)
+    moveForward(deltaTime)
+    //checkEnergy()
+
+  private def seek(sim: Simulation) : Option[Plant] =
+    sim.minBy[Plant](plant =>
+      transform.position.distanceToSquared(plant.transform.position))
+
+  private def lookAt(maybePlant: Option[Plant]) : Unit =
+    transform = transform.rotateTo(
+      maybePlant.
+      map((plant : Plant) => transform.angleTo(plant.transform)).
+      getOrElse(0))
+
+  private def moveForward(deltaTime: Int): Unit =
+    transform = transform.moved(
+      Position.fromPolar(deltaTime * attributes.speed, transform.rotation))
 
   override def draw(g2d: Graphics2D): Unit =
     val (x, y) = transform.position.getTuple
