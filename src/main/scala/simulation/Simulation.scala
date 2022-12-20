@@ -12,13 +12,13 @@ case class Simulation():
   def gameTime: Int = _gameTime
   val gameObjects: ArrayBuffer[GameObject] = ArrayBuffer.empty[GameObject]
   for i <- 0 to 10 do
-    addCreature(Herbivore(Transform(Position(50, 50).randomWithin(100), 0), CreatureAttributes(100, 150, 75, 2, 4)))
+    addGameObject(Herbivore(Transform(Position(50, 50).randomWithin(100), 0), CreatureAttributes(100, 150, 75, 2, 4)))
 
   for i <- 0 to 100 do
-    addCreature(Plant(Transform(Position(0, 0).randomWithin(100), 0), 100, 100))
+    addGameObject(Plant(Transform(Position(340, 240).randomWithin(300), 0), 100, 100))
 
-  private def addCreature(interactable: GameObject): Unit =
-    gameObjects += interactable
+  private def addGameObject(gameObject: GameObject): Unit =
+    gameObjects += gameObject
 
 
   def tick(deltaTime: Int): Unit =
