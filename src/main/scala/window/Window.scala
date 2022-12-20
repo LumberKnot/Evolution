@@ -2,12 +2,7 @@ package window
 
 import controller.{Position, Radians, Transform}
 
-import java.awt.event.KeyListener
-import java.awt.event.KeyListener
-import java.awt.event.KeyEvent
-import java.awt.event.MouseEvent
-import java.awt.event.MouseListener
-import java.awt.event.MouseMotionListener
+import java.awt.event.{KeyEvent, KeyListener, MouseEvent, MouseListener, MouseMotionListener, MouseWheelListener, MouseWheelEvent}
 import java.awt.Graphics2D
 import java.awt.Color
 case class Window(val title: String, val width: Int, val height: Int):
@@ -15,12 +10,22 @@ case class Window(val title: String, val width: Int, val height: Int):
   private val mouseManager = new MouseManager()
   private val display: Display = new Display(title, width, height)
   private var camera = Transform(0, 0, 0)
+  private var _scale: Double = 1;
+  //TODO ENCAPSULATE BELLOW ALSO DO I REALLY NEED BOTH?!?
   display.frame.addKeyListener(keyManager)
   display.frame.addMouseListener(mouseManager)
   display.frame.addMouseMotionListener(mouseManager)
+  display.frame.addMouseWheelListener(mouseManager)
   display.canvas.addMouseListener(mouseManager)
   display.canvas.addMouseMotionListener(mouseManager)
+  display.canvas.addMouseWheelListener(mouseManager)
+  def setScale(scale: Double): Unit =
+    assert(scale != 0, "Scale set to 0, will cause divison by zero error")
+    _scale = scale
 
+  def scale(scalar: Double): Unit =
+    assert(scalar != 0, "Cant be 0")
+    _scale *= scalar
   def setOrigin(position: Position): Unit =
   camera = camera.moveTo(position)
 
@@ -29,8 +34,12 @@ case class Window(val title: String, val width: Int, val height: Int):
 
   def leftPressed: Boolean = mouseManager.leftPressed
   def rightPressed: Boolean = mouseManager.rightPressed
+  def scrollForward: Boolean = mouseManager.scrollForward
+  def scrollBackwards: Boolean = mouseManager.scrollBackwards
 
-  def mousePos: Position = camera.position - Position.fromIntTuple(mouseManager.pos)
+  def mousePos: Position =
+    val offsetPos = (camera.position - Position.fromIntTuple(mouseManager.pos))
+    offsetPos / _scale
 
 
   def render(draw: Graphics2D => Unit): Unit =
@@ -43,7 +52,11 @@ case class Window(val title: String, val width: Int, val height: Int):
     val (x: Int, y: Int) = camera.position.getTuple
     g2d.clearRect(0, 0, width, height)
     g2d.translate(x, y)
-    //g2d.rotate(camera.rotation, width/2, height/2)
+    g2d.scale(_scale, _scale)
+
+
+
+
 
 
     draw(g2d) //RITAR ALLT
@@ -78,10 +91,17 @@ class KeyManager() extends KeyListener:
 
 
 
-class MouseManager() extends MouseListener, MouseMotionListener:
+class MouseManager() extends MouseListener, MouseMotionListener, MouseWheelListener:
   var leftPressed: Boolean = false
   var rightPressed: Boolean = false
+  var scrollForward: Boolean = false
+  var scrollBackwards: Boolean = false
   var pos: (Int, Int) = (-1, -1)
+
+  override def mouseWheelMoved(e: MouseWheelEvent): Unit =
+      scrollForward = e.getWheelRotation() == -1
+      scrollBackwards = e.getWheelRotation() == 1
+
 
   override def mouseClicked(e: MouseEvent): Unit = {}
   override def mouseEntered(e: MouseEvent): Unit = {}
@@ -90,7 +110,7 @@ class MouseManager() extends MouseListener, MouseMotionListener:
   override def mousePressed(e: MouseEvent): Unit =
     println("PRESSED")
     if (e.getButton() == MouseEvent.BUTTON1) then leftPressed = true
-    if (e.getButton() == MouseEvent.BUTTON2) then rightPressed = true
+    else if (e.getButton() == MouseEvent.BUTTON2) then rightPressed = true
 
   override def mouseReleased(e: MouseEvent): Unit =
     if (e.getButton() == MouseEvent.BUTTON1) then leftPressed = false

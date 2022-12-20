@@ -17,6 +17,7 @@ case class SimulationControler(width: Int, height: Int):
       tickCamera()
       window.render(g2d => {
         simulation.gameObjects.foreach(creature => creature.draw(g2d))
+        g2d.drawRect(0, 0, 10, 10)
       })
 
 
@@ -24,9 +25,11 @@ case class SimulationControler(width: Int, height: Int):
   private def tickCamera(): Unit =
     if window.keyManager.isKeyPressed(KeyEvent.VK_UP) then currentPosition = currentPosition + Position(0, 10)
     else if window.keyManager.isKeyPressed(KeyEvent.VK_DOWN) then currentPosition = currentPosition + Position(0, -10)
-    else if window.keyManager.isKeyPressed(KeyEvent.VK_LEFT) then currentPosition = currentPosition + Position(5, 0)
+    else if window.keyManager.isKeyPressed(KeyEvent.VK_LEFT) then currentPosition = currentPosition + Position(10, 0)
     else if window.keyManager.isKeyPressed(KeyEvent.VK_RIGHT) then currentPosition = currentPosition + Position(-10, 0)
+    else if window.keyManager.isKeyPressed(KeyEvent.VK_Q) then window.scale(1.1)
+    else if window.keyManager.isKeyPressed(KeyEvent.VK_E) then window.scale(0.9)
 
     window.setOrigin(currentPosition)
     Thread.sleep(10) //TODO Varför är timern här
-    println(s"Camera offset = $currentPosition, MousePos = ${window.mousePos}")
+    //println(s"Camera offset = $currentPosition, MousePos = ${window.mousePos}")

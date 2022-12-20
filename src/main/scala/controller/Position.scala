@@ -12,6 +12,10 @@ case class Position(x : Int, y : Int):
   infix def +(other: Position): Position = Position(other.x + x, other.y + y)
   @targetName("minus")
   infix def -(other: Position): Position = Position(other.x - x, other.y - y)
+  @targetName("times")
+  infix def *(scalar: Int): Position = Position(scalar * x, scalar * y)
+  @targetName("division")
+  infix def /(scalar: Double): Position = Position((x / scalar).toInt, (y / scalar).toInt)
 
   private lazy val random : Random = Random()
   def randomWithin(range : Double) : Position =

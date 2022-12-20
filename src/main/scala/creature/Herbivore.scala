@@ -5,7 +5,7 @@ import simulation.Simulation
 
 import java.awt.Graphics2D
 
-case class Herbivore(var transform: Transform, attributes: CreatureAttributes) extends Clockable, GameObject, Drawable:
+case class Herbivore(var transform: Transform, attributes: CreatureAttributes) extends GameObject:
   override def tick(deltaTime: Int, simulation: Simulation): Unit =
     move(deltaTime)
 
