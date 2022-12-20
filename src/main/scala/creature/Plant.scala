@@ -9,6 +9,8 @@ case class Plant(var transform: Transform, reproductionTime : Int, reproductionR
 
   private var time: Int = 0
 
+  def energy : Double = time
+
   override def tick(deltaTime : Int, simulation: Simulation) : Unit =
     time += 1
 
