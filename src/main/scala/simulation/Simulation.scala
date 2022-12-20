@@ -19,7 +19,7 @@ case class Simulation():
     addGameObject(Herbivore(Transform(Position(50, 50).randomWithin(100), 0), CreatureAttributes(100, 150, 75, 2, 4)))
 
   for i <- 0 to 1 do
-    addGameObject(Plant(Transform(Position(340, 240).randomWithin(300), 0), 20, 100))
+    addGameObject(Plant(Transform(Position(340, 240).randomWithin(300), 0), 100, 100))
 
   def addGameObject(gameObject: GameObject): Unit =
     gameObjects += gameObject

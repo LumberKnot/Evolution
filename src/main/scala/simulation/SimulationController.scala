@@ -33,3 +33,4 @@ case class SimulationController(width: Int, height: Int):
     else if window.keyManager.isKeyPressed(KeyEvent.VK_E) then window.scale(0.9)
 
     window.setOrigin(currentPosition)
+    //change
