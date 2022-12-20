@@ -33,8 +33,3 @@ case class SimulationController(width: Int, height: Int):
     else if window.keyManager.isKeyPressed(KeyEvent.VK_E) then window.scale(0.9)
 
     window.setOrigin(currentPosition)
-<<<<<<< HEAD:src/main/scala/simulation/SimulationControler.scala
-    Thread.sleep(10) //TODO Varför är timern här
-=======
->>>>>>> dc452c407d5e92692ee86fb4d5fb1e2449c83ca7:src/main/scala/simulation/SimulationController.scala
-    //println(s"Camera offset = $currentPosition, MousePos = ${window.mousePos}")
