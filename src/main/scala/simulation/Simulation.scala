@@ -27,11 +27,8 @@ case class Simulation():
   def addCommand(command: SimulationCommand): Unit =
     commands += command
 
-  def minBy[T <: GameObject](f : GameObject => Double) : Option[T] =
-    val filtered = gameObjects.collect {
-      case v : T => v
-    }
-    filtered.minByOption(f)
+  inline def minBy[T <: GameObject](f : GameObject => Double) : Option[T] =
+    gameObjects.collect {case v: T => v}.minByOption(f)
 
   def tick(deltaTime: Int): Unit =
     gameObjects.foreach(_.tick(deltaTime, this))
