@@ -10,14 +10,16 @@ case class SimulationController(width: Int, height: Int):
   val simulation: Simulation = Simulation()
   var currentPosition: Position = Position(0, 0)
 
+  val deltaTime = 5
 
   def run(): Unit =
     while true do
-      simulation.tick(5)
+      simulation.tick(deltaTime)
       tickCamera()
       window.render(g2d => {
         simulation.gameObjects.foreach(creature => creature.draw(g2d))
       })
+      Thread.sleep(10)
 
 
 
@@ -28,5 +30,4 @@ case class SimulationController(width: Int, height: Int):
     else if window.keyManager.isKeyPressed(KeyEvent.VK_RIGHT) then currentPosition = currentPosition + Position(-10, 0)
 
     window.setOrigin(currentPosition)
-    Thread.sleep(10) //TODO Varför är timern här
-    println(s"Camera offset = $currentPosition, MousePos = ${window.mousePos}")
+    //println(s"Camera offset = $currentPosition, MousePos = ${window.mousePos}")

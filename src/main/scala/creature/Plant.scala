@@ -14,11 +14,12 @@ case class Plant(var transform: Transform, reproductionTime : Int, reproductionR
 
     if time >= reproductionTime then
       time = 0
-      reproduce()
+      reproduce(simulation)
 
 
-  private def reproduce() : Unit =
-    copy(transform = transform.moveTo(transform.position.randomWithin(reproductionRange)))
+  private def reproduce(simulation: Simulation) : Unit =
+    val newPlant = copy(transform = transform.moveTo(transform.position.randomWithin(reproductionRange)))
+    simulation.addCommand{simulation => simulation.addGameObject(newPlant)}
 
   override def draw(g2d: Graphics2D): Unit =
     val (x, y) = transform.position.getTuple
